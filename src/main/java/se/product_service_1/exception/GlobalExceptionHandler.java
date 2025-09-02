@@ -1,4 +1,4 @@
-package exception;
+package se.product_service_1.exception;
 
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
