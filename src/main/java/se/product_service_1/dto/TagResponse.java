@@ -5,16 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductResponse {
+public class TagResponse {
     private Long id;
-    private String productName;
-    private String categoryName;
-    private Double price;
-    private List<String> tagNames; // Ny property för taggar
+    private String name;
+    private String description;
+    private int productCount;
 }

@@ -11,10 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductResponse {
-    private Long id;
-    private String productName;
+public class ProductSearchRequest {
+    private List<String> tagNames;
     private String categoryName;
-    private Double price;
-    private List<String> tagNames; // Ny property för taggar
+    private boolean requireAllTags; // true = måste ha alla taggar, false = minst en tagg
+    private String searchTerm; // för att söka i tagg-namn
 }
