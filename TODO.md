@@ -16,7 +16,7 @@
 ### 3. REST API
 - [x] Implementera CRUD-endpoints för produkter
 - [x] Implementera endpoints för produktkategorier
-- [ ] Implementera endpoints för produktbilder (upload/download till Azure Blob Storage)
+- [ ] Implementera endpoints för produktbilder (upload/download till Azure Blob Storage) // TODO: Fråga Lars
 - [x] Implementera endpoints för produktattribut och prissättning
 - [x] Säkerställ korrekt HTTP-statushantering och felhantering
 
@@ -26,20 +26,18 @@
 - [ ] Hantera concurrency (optimistic locking / versionering) vid uppdatering av lager
 
 ### 5. Search & Filter
-- [ ] Implementera sökfunktionalitet på [x] namn, [x] kategori, [ ] attribut och [ ] prisintervall
+- [ ] Implementera sökfunktionalitet på [x] namn, [x] kategori, [ ] attribut
 - [ ] Implementera filtrering (t.ex. price range, category, availability)
 
-### 6. Filhantering
+### 6. Filhantering 
+ // TODO: Fråga Lars
 - [ ] Implementera endpoints för upload och delete av filer
 - [ ] Säkerställ åtkomstkontroll och säker URL-generering
 
 ### 7. Testning
 - [ ] Unit tests för services och repositories
-- [ ] Integration tests för REST endpoints
-- [ ] Eventuellt contract tests om andra tjänster konsumerar Product Service
 
 ---
 
 ## Övrigt / DevOps & Monitoring
-- [ ] Logging och alerting
-- [ ] Dokumentera API:er med Swagger/OpenAPI
+- [x] Dokumentera API:er med Swagger/OpenAPI
