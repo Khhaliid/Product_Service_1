@@ -6,7 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tags")
@@ -16,15 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 public class Tag {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private int Long;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false)
-    private String tagName;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    //TODO är detta rätt eller ska det vara i Product?
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_tag" , nullable = false)
-    private List<Product> products;
+    @Column(length = 500)
+    private String description;
+
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Product> products = new HashSet<>();
 }
