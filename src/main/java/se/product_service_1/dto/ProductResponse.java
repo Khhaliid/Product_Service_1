@@ -16,5 +16,6 @@ public class ProductResponse {
     private String productName;
     private String categoryName;
     private Double price;
+    private int stockQuantity;
     private List<String> tagNames; // Ny property för taggar
 }

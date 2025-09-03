@@ -1,5 +1,6 @@
 package se.product_service_1.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class ProductController {
     private ProductService productService;
     private CategoryService categoryService;
 
+    @Operation(summary = "Get all products", description = "Returns all products")
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
@@ -32,7 +34,7 @@ public class ProductController {
         }
         return ResponseEntity.ok(responseList);
     }
-
+    @Operation(summary = "Get all products from a category", description = "Returns all products from a specific category")
     @GetMapping("/{productCategory}")
     public ResponseEntity<List<ProductResponse>> getProductsByCategory(@PathVariable String productCategory) {
         Category category = categoryService.getCategoryByName(productCategory);
@@ -44,7 +46,7 @@ public class ProductController {
         }
         return ResponseEntity.ok(responseList);
     }
-
+    @Operation(summary = "Add a new product", description = "Saves a new product")
     @PostMapping
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest) {
         Category category = categoryService.getCategoryByName(productRequest.getCategoryName());
@@ -52,6 +54,7 @@ public class ProductController {
                 .category(category)
                 .price(productRequest.getPrice())
                 .name(productRequest.getProductName())
+                .stockQuantity(productRequest.getStockQuantity())
                 .build();
 
         Product savedProduct;
@@ -64,14 +67,14 @@ public class ProductController {
         ProductResponse productResponse = buildProductResponse(savedProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponse);
     }
-
+    @Operation(summary = "Delete a product", description = "Delete a product by name")
     @DeleteMapping
     public ResponseEntity<String> deleteProduct(@RequestBody ProductDeleteRequest productDelete) {
         Product product = productService.getProductByName(productDelete.getProductName());
         productService.deleteProduct(product.getId());
         return ResponseEntity.ok("Product deleted.");
     }
-
+    @Operation(summary = "Update existing product", description = "Update existing product, remove fields you dont want to update")
     @PutMapping
     public ResponseEntity<ProductResponse> updateProduct(@RequestBody ProductUpdateRequest productUpdate) {
         Product product = productService.getProductByName(productUpdate.getCurrentProductName());
@@ -91,6 +94,17 @@ public class ProductController {
         ProductResponse productResponse = buildProductResponse(updatedProduct);
         return ResponseEntity.ok(productResponse);
     }
+    @Operation(summary = "Update stockQuantity", description = "Add or subtract stockQuantity from current stock")
+    @PostMapping("/inventoryManager")
+    public ResponseEntity<ProductResponse> updateStockQuantity(@RequestBody InventoryManagementRequest inventoryManagementRequest) {
+        Product product = productService.getProductByName(inventoryManagementRequest.getProductName());
+
+        product.setStockQuantity(product.getStockQuantity() + inventoryManagementRequest.getInventoryChange());
+        Product updatedProduct = productService.updateProduct(product);
+
+        return ResponseEntity.ok(buildProductResponse(updatedProduct));
+    }
+
 
     // === NYA ENDPOINTS FÖR TAGG-FUNKTIONALITET ===
 
@@ -151,23 +165,28 @@ public class ProductController {
     private ProductResponse buildProductResponse(Product product) {
         List<String> tagNames = new ArrayList<>();
 
-        // Säker hantering av taggar för att undvika lazy loading problem
-        try {
-            if (product.getTags() != null) {
-                tagNames = product.getTags().stream()
-                        .map(Tag::getName)
-                        .collect(Collectors.toList());
-            }
-        } catch (Exception e) {
-            // Om lazy loading misslyckas, använd tom lista
-            tagNames = new ArrayList<>();
+        for (Tag tag : product.getTags()) {
+            tagNames.add(tag.getName());
         }
+
+        // Säker hantering av taggar för att undvika lazy loading problem
+//        try {
+//            if (product.getTags() != null) {
+//                tagNames = product.getTags().stream()
+//                        .map(Tag::getName)
+//                        .collect(Collectors.toList());
+//            }
+//        } catch (Exception e) {
+//            // Om lazy loading misslyckas, använd tom lista
+//            tagNames = new ArrayList<>();
+//        }
 
         return ProductResponse.builder()
                 .id(product.getId())
                 .categoryName(product.getCategory().getName())
                 .productName(product.getName())
                 .price(product.getPrice())
+                .stockQuantity(product.getStockQuantity())
                 .tagNames(tagNames)
                 .build();
     }
