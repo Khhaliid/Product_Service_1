@@ -6,9 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "tags")
 @Data
@@ -26,8 +23,4 @@ public class Tag {
 
     @Column(length = 500)
     private String description;
-
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Product> products = new HashSet<>();
 }

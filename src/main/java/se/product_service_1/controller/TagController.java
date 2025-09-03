@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import se.product_service_1.dto.TagRequest;
 import se.product_service_1.dto.TagResponse;
 import se.product_service_1.model.Tag;
+import se.product_service_1.repository.ProductTagRepository;
 import se.product_service_1.service.TagService;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class TagController {
 
     private final TagService tagService;
+    private final ProductTagRepository productTagRepository;
 
     @GetMapping
     public ResponseEntity<List<TagResponse>> getAllTags() {
@@ -58,11 +60,14 @@ public class TagController {
     }
 
     private TagResponse buildTagResponse(Tag tag) {
+        // Räkna produkter som använder denna tagg via ProductTagRepository
+        int productCount = productTagRepository.findByTagId(tag.getId()).size();
+
         return TagResponse.builder()
                 .id(tag.getId())
                 .name(tag.getName())
                 .description(tag.getDescription())
-                .productCount(tag.getProducts() != null ? tag.getProducts().size() : 0)
+                .productCount(productCount)
                 .build();
     }
 }

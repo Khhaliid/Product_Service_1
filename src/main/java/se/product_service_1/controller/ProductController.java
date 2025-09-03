@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import se.product_service_1.dto.*;
 import se.product_service_1.model.Category;
 import se.product_service_1.model.Product;
-import se.product_service_1.model.Tag;
 import se.product_service_1.service.CategoryService;
 import se.product_service_1.service.ProductService;
 
@@ -149,23 +148,12 @@ public class ProductController {
     }
 
     private ProductResponse buildProductResponse(Product product) {
-        List<String> tagNames = new ArrayList<>();
-
-        // Säker hantering av taggar för att undvika lazy loading problem
-        try {
-            if (product.getTags() != null) {
-                tagNames = product.getTags().stream()
-                        .map(Tag::getName)
-                        .collect(Collectors.toList());
-            }
-        } catch (Exception e) {
-            // Om lazy loading misslyckas, använd tom lista
-            tagNames = new ArrayList<>();
-        }
+        // Hämta taggar för produkten via ProductService
+        List<String> tagNames = productService.getTagNamesForProduct(product.getId());
 
         return ProductResponse.builder()
                 .id(product.getId())
-                .categoryName(product.getCategory().getName())
+                .categoryName(product.getCategory() != null ? product.getCategory().getName() : "Unknown")
                 .productName(product.getName())
                 .price(product.getPrice())
                 .tagNames(tagNames)
