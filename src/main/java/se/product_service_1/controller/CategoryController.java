@@ -31,7 +31,7 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    @Operation(summary = "Add new catagory", description = "Create a new category")
+    @Operation(summary = "Add new category", description = "Create a new category")
     @PostMapping
     public ResponseEntity<CategoryResponse> addCategory(@RequestBody CategoryRequest categoryRequest) {
         Category category = Category.builder()
