@@ -13,5 +13,6 @@ public class ProductRequest {
     private String productName;
     private String categoryName;
     private Double price;
+    private Integer stockQuantity;
     private List<String> tagNames; // Ny property för taggar
 }
