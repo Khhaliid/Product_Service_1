@@ -20,14 +20,12 @@
 - [x] Implementera endpoints för produktattribut och prissättning
 - [x] Säkerställ korrekt HTTP-statushantering och felhantering
 
-### 4. Inventory & Concurrency
-- [ ] Implementera lagerhantering med fält som `stockQuantity`
-- [ ] Implementera endpoint för att kolla tillgänglighet
-- [ ] Hantera concurrency (optimistic locking / versionering) vid uppdatering av lager
+### 4. Inventory
+- [x] Implementera lagerhantering med fält som `stockQuantity`
+- [x] Implementera endpoint för att kolla tillgänglighet
 
 ### 5. Search & Filter
-- [ ] Implementera sökfunktionalitet på [x] namn, [x] kategori, [ ] attribut
-- [ ] Implementera filtrering (t.ex. price range, category, availability)
+- [ ] Implementera sökfunktionalitet på [x] namn, [x] kategori, [ ] attribut(tags)
 
 ### 6. Filhantering 
  // TODO: Fråga Lars
