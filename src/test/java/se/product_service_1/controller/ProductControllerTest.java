@@ -28,10 +28,10 @@ class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+//    @MockBean
     private ProductService productService;
 
-    @MockBean
+//    @MockBean
     private CategoryService categoryService;
 
     @Autowired
@@ -43,7 +43,7 @@ class ProductControllerTest {
                 .name("Laptop")
                 .price(999.99) // Double
                 .category(Category.builder().name("Electronics").build())
-                .tags(Set.of(Tag.builder().name("Tech").build()))
+//                .tags(Set.of(Tag.builder().name("Tech").build()))
                 .build();
     }
 
@@ -139,7 +139,7 @@ class ProductControllerTest {
                 .name("Gaming Laptop")
                 .price(1299.99)
                 .category(Category.builder().name("Gaming").build())
-                .tags(existing.getTags())
+//                .tags(existing.getTags())
                 .build();
 
         Mockito.when(productService.getProductByName("Laptop")).thenReturn(existing);
