@@ -16,7 +16,7 @@ public class InventoryManagementRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class InventoryChange {
-        private String productName;
+        private Long productId;
         private Integer inventoryChange;
     }
 }

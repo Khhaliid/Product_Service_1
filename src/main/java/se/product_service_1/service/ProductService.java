@@ -263,10 +263,10 @@ public class ProductService {
         List<Product> productList = new ArrayList<>(inventoryChanges.size());
         Product product;
         for (InventoryChange change : inventoryChanges) {
-            product = getProductByName(change.getProductName());
+            product = getProductById(change.getProductId());
             int newStockQuantity = product.getStockQuantity() + change.getInventoryChange();
             if (newStockQuantity < 0) {
-                throw new NotEnoughStockException("Not enough stock of " + change.getProductName() + ". Stock quantity: " + product.getStockQuantity());
+                throw new NotEnoughStockException("Not enough stock of " + product.getName() + ". Stock quantity: " + product.getStockQuantity());
             }
             product.setStockQuantity(newStockQuantity);
             productRepository.save(product);
