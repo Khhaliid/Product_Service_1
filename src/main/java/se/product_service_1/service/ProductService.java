@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import se.product_service_1.dto.InventoryManagementRequest;
+import se.product_service_1.dto.InventoryManagementRequest.InventoryChange;
 import se.product_service_1.dto.ProductSearchRequest;
+import se.product_service_1.exception.NotEnoughStockException;
 import se.product_service_1.exception.ProductAlreadyExistsException;
 import se.product_service_1.exception.ProductNotFoundException;
 import se.product_service_1.model.Product;
@@ -252,5 +255,23 @@ public class ProductService {
         }
 
         return product;
+    }
+
+    @Transactional
+    public List<Product> updateInventoryChange(InventoryManagementRequest inventoryManagementRequest) {
+        List<InventoryChange> inventoryChanges = inventoryManagementRequest.getInventoryChange();
+        List<Product> productList = new ArrayList<>(inventoryChanges.size());
+        Product product;
+        for (InventoryChange change : inventoryChanges) {
+            product = getProductByName(change.getProductName());
+            int newStockQuantity = product.getStockQuantity() + change.getInventoryChange();
+            if (newStockQuantity < 0) {
+                throw new NotEnoughStockException("Not enough stock of " + change.getProductName() + ". Stock quantity: " + product.getStockQuantity());
+            }
+            product.setStockQuantity(newStockQuantity);
+            productRepository.save(product);
+            productList.add(product);
+        }
+        return productList;
     }
 }

@@ -95,13 +95,16 @@ public class ProductController {
     }
     @Operation(summary = "Update stockQuantity", description = "Add or subtract stockQuantity from current stock")
     @PostMapping("/inventoryManager")
-    public ResponseEntity<ProductResponse> updateStockQuantity(@RequestBody InventoryManagementRequest inventoryManagementRequest) {
-        Product product = productService.getProductByName(inventoryManagementRequest.getProductName());
+    public ResponseEntity<List<ProductResponse>> updateStockQuantity(@RequestBody InventoryManagementRequest inventoryManagementRequest) {
+        List<Product> productList = productService.updateInventoryChange(inventoryManagementRequest);
+        List<ProductResponse> responseList = new ArrayList<>(productList.size());
 
-        product.setStockQuantity(product.getStockQuantity() + inventoryManagementRequest.getInventoryChange());
-        Product updatedProduct = productService.updateProduct(product);
+        for (Product product : productList) {
+            ProductResponse productResponse = buildProductResponse(product);
+            responseList.add(productResponse);
+        }
 
-        return ResponseEntity.ok(buildProductResponse(updatedProduct));
+        return ResponseEntity.ok(responseList);
     }
 
 
