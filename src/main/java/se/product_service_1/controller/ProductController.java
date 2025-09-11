@@ -118,7 +118,7 @@ public class ProductController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responseList);
     }
-
+    @Operation(summary = "Hämta alla produkter för en tag", description = "Ger en lista på alla produkter med den tag man söker efter")
     @GetMapping("/search/tags")
     public ResponseEntity<List<ProductResponse>> searchProductsByTags(@RequestParam List<String> tags) {
         List<Product> products = productService.searchProductsByTags(tags);
@@ -145,7 +145,7 @@ public class ProductController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responseList);
     }
-
+    @Operation(summary = "Add a tag to product", description = "Add a tag to a specified product id")
     @PostMapping("/{productId}/tags")
     public ResponseEntity<ProductResponse> addTagsToProduct(
             @PathVariable Long productId,
@@ -154,7 +154,7 @@ public class ProductController {
         ProductResponse response = buildProductResponse(product);
         return ResponseEntity.ok(response);
     }
-
+    @Operation(summary = "Remove tag from product", description = "Remove a tag from a specified product id")
     @DeleteMapping("/{productId}/tags")
     public ResponseEntity<ProductResponse> removeTagsFromProduct(
             @PathVariable Long productId,
