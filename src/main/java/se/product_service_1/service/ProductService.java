@@ -113,7 +113,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> {
                     log.warn("getProductById – ingen produkt hittades för produktId={}", productId);
-                    return new RuntimeException("Produkt med ID " + productId + " finns inte.");
+                    return new ProductNotFoundException("Produkt med ID " + productId + " finns inte.");
                 });
         log.debug("getProductById – hittade produkt={}", product);
         return product;
@@ -259,7 +259,7 @@ public class ProductService {
 
     @Transactional
     public List<Product> updateInventoryChange(InventoryManagementRequest inventoryManagementRequest) {
-        List<InventoryChange> inventoryChanges = inventoryManagementRequest.getInventoryChange();
+        List<InventoryChange> inventoryChanges = inventoryManagementRequest.getInventoryChanges();
         List<Product> productList = new ArrayList<>(inventoryChanges.size());
         Product product;
         for (InventoryChange change : inventoryChanges) {

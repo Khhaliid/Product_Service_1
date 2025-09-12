@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InventoryManagementRequest {
-    List<InventoryChange> inventoryChange;
+    List<InventoryChange> inventoryChanges;
 
     @Data
     @AllArgsConstructor
